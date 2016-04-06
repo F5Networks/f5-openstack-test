@@ -35,7 +35,8 @@ setup(
                       'mock >= 1.3.0'],
     packages=['f5_os_test'],
     entry_points={
-        'pytest11': ['polling_nc_factory = f5_os_test.polling_clients']
+        'pytest11': ['poll_fix = f5_os_test.polling_clients',
+                     'infra_fix = f5_os_test.infrastructure']
     },
     classifiers=[
         'Development Status :: 3 - Alpha',

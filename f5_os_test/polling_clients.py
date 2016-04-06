@@ -24,6 +24,7 @@ IF a client has methods that provide a uniform means of observing state changes
 then we could probably effectively used such a decorator, but I'm not yet
 familiar enough with OS to make that leap.
 '''
+from f5.bigip import BigIP
 import pytest
 import time
 
