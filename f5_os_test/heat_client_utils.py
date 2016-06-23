@@ -34,8 +34,14 @@ def cleanup_stack_if_exists(heat_client, template_name):
 @pytest.fixture
 def HeatStack(heatclientmanager, request):
     '''Fixture for creating/deleting a heat stack.'''
-    def manage_stack(template_file, stack_name, parameters={}):
-        def teardown():
+    def manage_stack(
+            template_file,
+            stack_name,
+            parameters={},
+            teardown=True,
+            expect_fail=False
+    ):
+        def test_teardown():
             heatclientmanager.delete_stack(stack.id)
 
         template = get_file_contents(template_file)
@@ -45,7 +51,14 @@ def HeatStack(heatclientmanager, request):
         config['parameters'] = parameters
         # Call delete before create, in case previous teardown failed
         cleanup_stack_if_exists(heatclientmanager, stack_name)
-        stack = heatclientmanager.create_stack(config)
-        request.addfinalizer(teardown)
+        target_status = 'CREATE_COMPLETE'
+        if expect_fail:
+            target_status = 'CREATE_FAILED'
+        stack = heatclientmanager.create_stack(
+            config,
+            target_status=target_status
+        )
+        if teardown:
+            request.addfinalizer(test_teardown)
         return heatclientmanager, stack
     return manage_stack

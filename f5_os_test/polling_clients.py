@@ -365,14 +365,14 @@ class HeatClientPollingManager(HeatClient, ClientManagerMixin):
     def stack_status(self, stack):
         return stack.stack_status
 
-    def create_stack(self, configuration):
+    def create_stack(self, configuration, target_status='CREATE_COMPLETE'):
         configuration.update(self.default_stack_config)
         stack = self.stacks.create(**configuration)
         return self.poll(
             self.stacks.get,
             stack['stack']['id'],
             self.stack_status,
-            target_status='CREATE_COMPLETE'
+            target_status=target_status
         )
 
     def delete_stack(self, stack_id):
