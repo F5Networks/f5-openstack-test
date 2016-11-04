@@ -1,0 +1,19 @@
+FROM ubuntu:latest
+
+RUN mkdir -p /root/devenv
+WORKDIR /root/devenv
+RUN DEBIAN_FRONTEND=noninteractive apt-get update &&\
+    apt-get install -y apt-utils &&\
+    apt-get upgrade -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ssh\
+                                                      make\
+                                                      git\
+                                                      python\
+                                                      python-pip
+RUN pip install --upgrade pip
+RUN pip install jinja2
+RUN git clone -b liberty https://github.com/F5Networks/f5-openstack-lbaasv2-driver.git
+WORKDIR /root/devenv/f5-openstack-lbaasv2-driver/systest
+COPY ./sshagent_entrypoint.sh /root/sshagent_entrypoint.sh
+RUN chmod +x /root/sshagent_entrypoint.sh
+ENTRYPOINT ["/root/sshagent_entrypoint.sh"]
