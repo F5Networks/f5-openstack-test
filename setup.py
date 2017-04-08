@@ -31,7 +31,7 @@ setup(
     keywords=['F5', 'openstack', 'test'],
     install_requires=['pytest == 2.9.1',
                       'pytest-cov == 2.2.1',
-                      'f5-sdk == 0.1.7',
+                      'f5-sdk == 2.2.2',
                       'python-neutronclient == 4.1.1',
                       'python-keystoneclient == 2.3.2',
                       'python-heatclient == 1.1.0',
